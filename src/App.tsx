@@ -3,6 +3,7 @@
 import React from 'react';
 import PredictionResultsChart from './components/PredictionResultsChart';
 import {OpenAPI} from "./httpfunctions";
+import EvaluationResultsChart from "./components/EvaluationResultsChart";
 
 function App() {
 
@@ -10,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <h1>FastAPI & Highcharts Example</h1>
-      <PredictionResultsChart />
+      <EvaluationResultsChart />
     </div>
   );
 }

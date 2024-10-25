@@ -4,7 +4,9 @@ import Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
 import {DefaultService} from "../httpfunctions";
 import {PredictionResponse} from "../httpfunctions/models/PredictionResponse";
-import {ResultPlot, HighChartsData} from "../components/ResultPlot";
+import {ResultPlot} from "../components/ResultPlot";
+import {createHighChartsData} from "../lib/dataProcessing";
+import {HighChartsData} from "../interfaces/HighChartsData";
 
 HighchartsMore(Highcharts); // Enables the 'arearange' series type
 
@@ -24,29 +26,6 @@ function groupBy(array: PredictionResponse[]): Record<string, PredictionResponse
 };
 
 
-function createHighChartsData(groupedDatum: PredictionResponse[]): HighChartsData {
-  const periods = Array.from(new Set(groupedDatum.map(item => item.period))).sort();
-  const ranges: number[][] = [];
-  const averages: number[][] = [];
-
-  periods.forEach(period => {
-    const quantileLow = groupedDatum.find(item => item.period === period && item.dataElement === 'quantile_low')?.value || 0;
-    const quantileHigh = groupedDatum.find(item => item.period === period && item.dataElement === 'quantile_high')?.value || 0;
-    const median = groupedDatum.find(item => item.period === period && item.dataElement === 'median')?.value || 0;
-
-    ranges.push([quantileLow, quantileHigh]);
-    averages.push([median]);
-  });
-
-  let dataElement = {
-    periods,
-    ranges,
-    averages
-  };
-
-  return dataElement;
-}
-
 const processDataValues = (data: PredictionResponse[]): Record<string, any> => {
   const groupedData = groupBy(data);
   console.log(groupedData)
@@ -56,7 +35,7 @@ const processDataValues = (data: PredictionResponse[]): Record<string, any> => {
 
   Object.keys(groupedData).forEach(orgUnit => {
     let groupedDatum = groupedData[orgUnit];
-    let dataElement = createHighChartsData(groupedDatum);
+    let dataElement = createHighChartsData(groupedDatum, item => item.dataElement);
     orgUnitsProcessedData[orgUnit] = dataElement;
     });
   return orgUnitsProcessedData;
@@ -85,67 +64,5 @@ const PredictionResultsChart = () => {
       </div>
   );
 }
-  // return (
-  //   <div>
-  //     {Object.keys(orgUnitsData).map(orgUnit => (
-  //       <div key={orgUnit} style={{ marginBottom: '40px' }}>
-  //         <h2>Predicted Disease Cases for {orgUnit}</h2>
-  //         <HighchartsReact
-  //           highcharts={Highcharts}
-  //           options={{
-  //             title: {
-  //               text: `Predicted Disease Cases for ${orgUnit}`,
-  //               align: 'left'
-  //             },
-  //             subtitle: {
-  //               text: 'Model: Model Name',
-  //               align: 'left'
-  //             },
-  //             xAxis: {
-  //               categories: orgUnitsData[orgUnit].periods, // Use periods as categories
-  //               title: {
-  //                 text: 'Period'
-  //               },
-  //             },
-  //             yAxis: {
-  //               title: {
-  //                 text: null
-  //               },
-  //               min: 0
-  //             },
-  //             tooltip: {
-  //               crosshairs: true,
-  //               shared: true,
-  //               valueSuffix: ' cases'
-  //             },
-  //             series: [{
-  //               name: 'Disease cases',
-  //               data: orgUnitsData[orgUnit].averages,
-  //               zIndex: 1,
-  //               marker: {
-  //                 fillColor: 'white',
-  //                 lineWidth: 2,
-  //                 lineColor: Highcharts.getOptions().colors[0]
-  //               }
-  //             }, {
-  //               name: 'Quantiles',
-  //               data: orgUnitsData[orgUnit].ranges,
-  //               type: 'arearange',
-  //               lineWidth: 0,
-  //               linkedTo: ':previous',
-  //               color: Highcharts.getOptions().colors[0],
-  //               fillOpacity: 0.3,
-  //               zIndex: 0,
-  //               marker: {
-  //                 enabled: false
-  //               }
-  //             }]
-  //           }}
-  //         />
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
-// };
 
 export default PredictionResultsChart;

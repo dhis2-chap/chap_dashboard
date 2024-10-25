@@ -1,12 +1,9 @@
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import React from "react";
-
-export interface HighChartsData{
-    periods: string[];
-    ranges: number[][];
-    averages: number[][];
-}
+import {HighChartsData} from "../interfaces/HighChartsData";
+import HighchartsMore from "highcharts/highcharts-more";
+HighchartsMore(Highcharts); // Enables the 'arearange' series type
 
 export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => {
     return (
