@@ -80,8 +80,6 @@ const ResultsChart = () => {
     setOrgUnitsData(orgUnitsProcessedData);
     }
 
-
-
   useEffect(() => {
     getData();
   }, []);
