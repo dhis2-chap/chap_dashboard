@@ -69,82 +69,148 @@ const processDataValues = (data: PredictionResponse[]): Record<string, any> => {
   return orgUnitsProcessedData;
 }
 
+const ResultPlot = (props: {orgUnit: string, data: HighChartsData}) => {
+return (
+    <HighchartsReact
+      highcharts={Highcharts}
+      options={{
+        title: {
+          text: `Predicted Disease Cases for ${props.orgUnit}`,
+          align: 'left'
+        },
+        subtitle: {
+          text: 'Model: Model Name',
+          align: 'left'
+        },
+        xAxis: {
+          categories: props.data.periods, // Use periods as categories
+          title: {
+            text: 'Period'
+          },
+        },
+        yAxis: {
+          title: {
+            text: null
+          },
+          min: 0
+        },
+        tooltip: {
+          crosshairs: true,
+          shared: true,
+          valueSuffix: ' cases'
+        },
+        series: [{
+          name: 'Disease cases',
+          data: props.data.averages,
+          zIndex: 1,
+          marker: {
+            fillColor: 'white',
+            lineWidth: 2,
+            lineColor: Highcharts.getOptions().colors[0]
+          }
+        }, {
+          name: 'Quantiles',
+          data: props.data.ranges,
+          type: 'arearange',
+          lineWidth: 0,
+          linkedTo: ':previous',
+          color: Highcharts.getOptions().colors[0],
+          fillOpacity: 0.3,
+          zIndex: 0,
+          marker: {
+            enabled: false
+          }
+        }]
+      }}
+    />
+  );
+}
+
+
+
 const ResultsChart = () => {
-  type DictType = {
-    [key: string]: any; // Keys are strings, and values are numbers
-  };
-  const [orgUnitsData, setOrgUnitsData] = useState<DictType>({});
+  const [orgUnitsData, setOrgUnitsData] = useState<Record<string, HighChartsData>>({});
   const getData = async () => {
     const response = await DefaultService.getResultsGetResultsGet()
     const orgUnitsProcessedData = processDataValues(response.dataValues);
     setOrgUnitsData(orgUnitsProcessedData);
-    }
+  }
 
   useEffect(() => {
     getData();
   }, []);
-
   return (
-    <div>
-      {Object.keys(orgUnitsData).map(orgUnit => (
-        <div key={orgUnit} style={{ marginBottom: '40px' }}>
-          <h2>Predicted Disease Cases for {orgUnit}</h2>
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={{
-              title: {
-                text: `Predicted Disease Cases for ${orgUnit}`,
-                align: 'left'
-              },
-              subtitle: {
-                text: 'Model: Model Name',
-                align: 'left'
-              },
-              xAxis: {
-                categories: orgUnitsData[orgUnit].periods, // Use periods as categories
-                title: {
-                  text: 'Period'
-                },
-              },
-              yAxis: {
-                title: {
-                  text: null
-                },
-                min: 0
-              },
-              tooltip: {
-                crosshairs: true,
-                shared: true,
-                valueSuffix: ' cases'
-              },
-              series: [{
-                name: 'Disease cases',
-                data: orgUnitsData[orgUnit].averages,
-                zIndex: 1,
-                marker: {
-                  fillColor: 'white',
-                  lineWidth: 2,
-                  lineColor: Highcharts.getOptions().colors[0]
-                }
-              }, {
-                name: 'Quantiles',
-                data: orgUnitsData[orgUnit].ranges,
-                type: 'arearange',
-                lineWidth: 0,
-                linkedTo: ':previous',
-                color: Highcharts.getOptions().colors[0],
-                fillOpacity: 0.3,
-                zIndex: 0,
-                marker: {
-                  enabled: false
-                }
-              }]
-            }}
-          />
-        </div>
-      ))}
-    </div>
+      <div>
+        {Object.keys(orgUnitsData).map(orgUnit => (
+            <div key={orgUnit} style={{marginBottom: '40px'}}>
+              <h2>Predicted Disease Cases for {orgUnit}</h2>
+              <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]}/>
+            </div>
+        ))}
+      </div>
   );
-};
+}
+  // return (
+  //   <div>
+  //     {Object.keys(orgUnitsData).map(orgUnit => (
+  //       <div key={orgUnit} style={{ marginBottom: '40px' }}>
+  //         <h2>Predicted Disease Cases for {orgUnit}</h2>
+  //         <HighchartsReact
+  //           highcharts={Highcharts}
+  //           options={{
+  //             title: {
+  //               text: `Predicted Disease Cases for ${orgUnit}`,
+  //               align: 'left'
+  //             },
+  //             subtitle: {
+  //               text: 'Model: Model Name',
+  //               align: 'left'
+  //             },
+  //             xAxis: {
+  //               categories: orgUnitsData[orgUnit].periods, // Use periods as categories
+  //               title: {
+  //                 text: 'Period'
+  //               },
+  //             },
+  //             yAxis: {
+  //               title: {
+  //                 text: null
+  //               },
+  //               min: 0
+  //             },
+  //             tooltip: {
+  //               crosshairs: true,
+  //               shared: true,
+  //               valueSuffix: ' cases'
+  //             },
+  //             series: [{
+  //               name: 'Disease cases',
+  //               data: orgUnitsData[orgUnit].averages,
+  //               zIndex: 1,
+  //               marker: {
+  //                 fillColor: 'white',
+  //                 lineWidth: 2,
+  //                 lineColor: Highcharts.getOptions().colors[0]
+  //               }
+  //             }, {
+  //               name: 'Quantiles',
+  //               data: orgUnitsData[orgUnit].ranges,
+  //               type: 'arearange',
+  //               lineWidth: 0,
+  //               linkedTo: ':previous',
+  //               color: Highcharts.getOptions().colors[0],
+  //               fillOpacity: 0.3,
+  //               zIndex: 0,
+  //               marker: {
+  //                 enabled: false
+  //               }
+  //             }]
+  //           }}
+  //         />
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
+// };
 
 export default ResultsChart;
