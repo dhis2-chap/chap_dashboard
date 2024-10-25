@@ -1,7 +1,7 @@
 // src/App.js
 // @ts-nocheck
 import React from 'react';
-import ResultsChart from './ResultsChart';
+import PredictionResultsChart from './components/PredictionResultsChart';
 import {OpenAPI} from "./httpfunctions";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <h1>FastAPI & Highcharts Example</h1>
-      <ResultsChart />
+      <PredictionResultsChart />
     </div>
   );
 }

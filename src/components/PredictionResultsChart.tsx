@@ -1,14 +1,12 @@
 // src/ResultsChart.js
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 import HighchartsMore from 'highcharts/highcharts-more';
-import {DataElement, DefaultService} from "./httpfunctions";
-import {PredictionResponse} from "./httpfunctions/models/PredictionResponse";
-import {FullPredictionResponse} from "./httpfunctions/models/FullPredictionResponse";
+import {DefaultService} from "../httpfunctions";
+import {PredictionResponse} from "../httpfunctions/models/PredictionResponse";
+import {ResultPlot, HighChartsData} from "../components/ResultPlot";
 
 HighchartsMore(Highcharts); // Enables the 'arearange' series type
-
 
 function groupBy(array: PredictionResponse[]): Record<string, PredictionResponse[]> {
   return array.reduce((result: Record<string, PredictionResponse[]>, currentItem:PredictionResponse) => {
@@ -25,11 +23,6 @@ function groupBy(array: PredictionResponse[]): Record<string, PredictionResponse
   }, {}); // Start with an empty object
 };
 
-interface HighChartsData {
-    periods: string[];
-    ranges: number[][];
-    averages: number[][];
-}
 
 function createHighChartsData(groupedDatum: PredictionResponse[]): HighChartsData {
   const periods = Array.from(new Set(groupedDatum.map(item => item.period))).sort();
@@ -69,66 +62,8 @@ const processDataValues = (data: PredictionResponse[]): Record<string, any> => {
   return orgUnitsProcessedData;
 }
 
-const ResultPlot = (props: {orgUnit: string, data: HighChartsData}) => {
-return (
-    <HighchartsReact
-      highcharts={Highcharts}
-      options={{
-        title: {
-          text: `Predicted Disease Cases for ${props.orgUnit}`,
-          align: 'left'
-        },
-        subtitle: {
-          text: 'Model: Model Name',
-          align: 'left'
-        },
-        xAxis: {
-          categories: props.data.periods, // Use periods as categories
-          title: {
-            text: 'Period'
-          },
-        },
-        yAxis: {
-          title: {
-            text: null
-          },
-          min: 0
-        },
-        tooltip: {
-          crosshairs: true,
-          shared: true,
-          valueSuffix: ' cases'
-        },
-        series: [{
-          name: 'Disease cases',
-          data: props.data.averages,
-          zIndex: 1,
-          marker: {
-            fillColor: 'white',
-            lineWidth: 2,
-            lineColor: Highcharts.getOptions().colors[0]
-          }
-        }, {
-          name: 'Quantiles',
-          data: props.data.ranges,
-          type: 'arearange',
-          lineWidth: 0,
-          linkedTo: ':previous',
-          color: Highcharts.getOptions().colors[0],
-          fillOpacity: 0.3,
-          zIndex: 0,
-          marker: {
-            enabled: false
-          }
-        }]
-      }}
-    />
-  );
-}
 
-
-
-const ResultsChart = () => {
+const PredictionResultsChart = () => {
   const [orgUnitsData, setOrgUnitsData] = useState<Record<string, HighChartsData>>({});
   const getData = async () => {
     const response = await DefaultService.getResultsGetResultsGet()
@@ -213,4 +148,4 @@ const ResultsChart = () => {
   // );
 // };
 
-export default ResultsChart;
+export default PredictionResultsChart;
