@@ -1,20 +1,19 @@
-// @ts-nocheck
 // src/ResultsChart.js
 import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsMore from 'highcharts/highcharts-more';
-import {DefaultService} from "./httpfunctions";
-import {FullPredictionResponse, PredictionResponse} from "./httpfunctions/models";
+import {DataElement, DefaultService} from "./httpfunctions";
+import {PredictionResponse} from "./httpfunctions/models/PredictionResponse";
+import {FullPredictionResponse} from "./httpfunctions/models/FullPredictionResponse";
 
 HighchartsMore(Highcharts); // Enables the 'arearange' series type
 
 
-function groupBy(array: PredictionResponse[], key: string): PredictionResponse {
-  return array.reduce(
-      (result, currentItem) => {
+function groupBy(array: PredictionResponse[]): Record<string, PredictionResponse[]> {
+  return array.reduce((result: Record<string, PredictionResponse[]>, currentItem:PredictionResponse) => {
     // Get the value of the specified key to group by
-    const groupKey = currentItem[key];
+    const groupKey: string = currentItem.orgUnit;
     // If the group does not exist, create it
     if (!result[groupKey]) {
       result[groupKey] = [];
@@ -26,11 +25,16 @@ function groupBy(array: PredictionResponse[], key: string): PredictionResponse {
   }, {}); // Start with an empty object
 };
 
+interface HighChartsData {
+    periods: string[];
+    ranges: number[][];
+    averages: number[][];
+}
 
-function createHighChartsData(groupedDatum) {
+function createHighChartsData(groupedDatum: PredictionResponse[]): HighChartsData {
   const periods = Array.from(new Set(groupedDatum.map(item => item.period))).sort();
-  const ranges = [];
-  const averages = [];
+  const ranges: number[][] = [];
+  const averages: number[][] = [];
 
   periods.forEach(period => {
     const quantileLow = groupedDatum.find(item => item.period === period && item.dataElement === 'quantile_low')?.value || 0;
@@ -50,12 +54,12 @@ function createHighChartsData(groupedDatum) {
   return dataElement;
 }
 
-const processDataValues = (data: PredictionResponse[]) => {
-  const groupedData = groupBy(data, 'orgUnit');
+const processDataValues = (data: PredictionResponse[]): Record<string, any> => {
+  const groupedData = groupBy(data);
   console.log(groupedData)
 
   // Create a mapping of orgUnits to their respective chart data
-  const orgUnitsProcessedData = {};
+  const orgUnitsProcessedData: Record<string, any> = {};
 
   Object.keys(groupedData).forEach(orgUnit => {
     let groupedDatum = groupedData[orgUnit];
