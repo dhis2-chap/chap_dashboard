@@ -35,7 +35,20 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => 
                     shared: true,
                     valueSuffix: ' cases'
                 },
-                series: [{
+                series: [
+                    {
+                        name: 'Real Data',
+                        data: props.data.realValues,
+                        zIndex: 2,
+                        type: 'line',
+                        color: Highcharts.getOptions().colors[2], // Different color for real data
+                        dashStyle: 'ShortDash', // Optional: to differentiate style
+                        marker: {
+                            enabled: true,
+                            fillColor: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    {
                     name: 'Disease cases',
                     data: props.data.averages,
                     zIndex: 1,

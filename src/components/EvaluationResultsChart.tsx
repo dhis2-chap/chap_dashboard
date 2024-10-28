@@ -1,9 +1,9 @@
 import React from 'react'
 import {ResultPlot} from "./ResultPlot";
 import {useEffect, useState} from "react";
-import {DefaultService, EvaluationEntry, EvaluationResponse} from "../httpfunctions";
+import {DataElement, DefaultService, EvaluationEntry, EvaluationResponse} from "../httpfunctions";
 import {HighChartsData} from "../interfaces/HighChartsData";
-import {createHighChartsData} from "../lib/dataProcessing";
+import {createHighChartsData, joinRealAndPredictedData} from "../lib/dataProcessing";
 import {SingleSelectField} from "@dhis2/ui";
 
 function groupBy<T>(array: T[], keyFunction: (item: T) => string): Record<string, T[]> {
@@ -46,8 +46,8 @@ function groupByTwoKeys<T>(
 
 
 
-const processDataValues = (data: EvaluationEntry[]): Record<string, Record<string, HighChartsData>> => {
-  const predictions = data;
+const processDataValues = (data: EvaluationEntry[], realValues: DataElement[]): Record<string, Record<string, HighChartsData>> => {
+  const realPeriods = realValues.map(item => item.pe).sort();
   const quantiles = Array.from(new Set(data.map(item => item.quantile))).sort();
   const lowQuantile = quantiles[0];
   const highQuantile = quantiles[quantiles.length - 1];
@@ -71,7 +71,7 @@ const processDataValues = (data: EvaluationEntry[]): Record<string, Record<strin
     Object.keys(doubleGroupedData[splitPeriod]).forEach(orgUnit => {
       let groupedDatum = doubleGroupedData[splitPeriod][orgUnit];
       let dataElement = createHighChartsData(groupedDatum, quantileFunc);
-      splitProcessedData[orgUnit] = dataElement;
+      splitProcessedData[orgUnit] = joinRealAndPredictedData(dataElement, realValues.filter(item => item.ou === orgUnit));
     });
     orgUnitsProcessedData[splitPeriod] = splitProcessedData;
   });
@@ -87,7 +87,7 @@ const EvaluationResultsChart = () => {
   const [allData, setAllData] = useState<Record<string, Record<string, HighChartsData>>>({} as Record<string, Record<string, HighChartsData>>);
   const getData = async () => {
     const response = await DefaultService.getEvaluationResultsGetEvaluationResultsGet()
-    const orgUnitsProcessedData = processDataValues(response.predictions);
+    const orgUnitsProcessedData = processDataValues(response.predictions, response.actualCases.data);
     let strings = Object.keys(orgUnitsProcessedData);
     console.log(strings);
     setAllSplitPeriods(strings);
