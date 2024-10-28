@@ -19,6 +19,7 @@ const EvaluationResultsDashboard: React.FC<EvaluationResultsChartProps> = ({ dat
   return (
     <div>
       <div>
+        <label>Select the split period: </label>
         <select value={selectedSplitPeriod} onChange={handlePeriodChange}>
           {splitPeriods.map((splitPeriod) => (
             <option key={splitPeriod} value={splitPeriod}>
@@ -30,7 +31,6 @@ const EvaluationResultsDashboard: React.FC<EvaluationResultsChartProps> = ({ dat
       <div>
         {Object.keys(orgUnitsData).map((orgUnit) => (
           <div key={orgUnit} style={{ marginBottom: '40px' }}>
-            <h2>Predicted Disease Cases for {orgUnit}</h2>
             <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]} />
           </div>
         ))}
