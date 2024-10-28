@@ -68,7 +68,19 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => 
                     zIndex: 0,
                     marker: {
                         enabled: false
-                    }
+                    },
+                }, {
+                    name: 'QuantilesMid',
+                    data: props.data.midranges,
+                    type: 'arearange',
+                    lineWidth: 0,
+                    linkedTo: ':previous',
+                    color: Highcharts.getOptions().colors[0],
+                    fillOpacity: 0.3,
+                    zIndex: 0,
+                    marker: {
+                        enabled: false
+                    },
                 }]
             }}
         />

@@ -15,28 +15,32 @@ export function joinRealAndPredictedData(predictedData: HighChartsData, realData
     const lastReal = realDataFiltered[padLength-1];
     const paddedAverage = Array(padLength-1).fill(null).concat([[lastReal]]).concat(predictedData.averages);
     const paddedRanges = Array(padLength-1).fill(null).concat([[lastReal, lastReal]]).concat(predictedData.ranges);
+    const paddedMidRanges = Array(padLength-1).fill(null).concat([[lastReal, lastReal]]).concat(predictedData.midranges);
     const allPeriods = realPeriodsFiltered.concat(predictedData.periods);
-    return {periods: allPeriods, ranges: paddedRanges, averages: paddedAverage, realValues: realDataFiltered};
+    return {periods: allPeriods, ranges: paddedRanges, averages: paddedAverage, realValues: realDataFiltered,midranges: paddedMidRanges};
 }
 
 export function createHighChartsData<T extends { period: string, value: number }>(groupedDatum: T[], quantileFunc: (item: T) => string): HighChartsData {
     const periods = Array.from(new Set(groupedDatum.map(item => item.period))).sort();
     const ranges: number[][] = [];
     const averages: number[][] = [];
-
+    const midranges: number[][] = [];
     periods.forEach(period => {
         const quantileLow = groupedDatum.find(item => item.period === period && quantileFunc(item) === 'quantile_low')?.value || 0;
         const quantileHigh = groupedDatum.find(item => item.period === period && quantileFunc(item) === 'quantile_high')?.value || 0;
         const median = groupedDatum.find(item => item.period === period && quantileFunc(item) === 'median')?.value || 0;
-
+        const quantileMidHigh = groupedDatum.find(item => item.period === period && quantileFunc(item) === 'quantile_mid_high')?.value || 0;
+        const quantileMidLow = groupedDatum.find(item => item.period === period && quantileFunc(item) === 'quantile_mid_low')?.value || 0;
         ranges.push([quantileLow, quantileHigh]);
         averages.push([median]);
+        midranges.push([quantileMidLow, quantileMidHigh]);
     });
 
     let dataElement = {
         periods,
         ranges,
-        averages
+        averages,
+        midranges
     };
 
     return dataElement;
@@ -86,6 +90,8 @@ export const processDataValues = (data: EvaluationEntry[], realValues: DataEleme
   const realPeriods = realValues.map(item => item.pe).sort();
   const quantiles = Array.from(new Set(data.map(item => item.quantile))).sort();
   const lowQuantile = quantiles[0];
+  const midLowQuantile = quantiles[1];
+  const midHighQuantile = quantiles[quantiles.length - 2];
   const highQuantile = quantiles[quantiles.length - 1];
   console.log(quantiles)
   const quantileFunc = (item: EvaluationEntry) => {
@@ -94,9 +100,13 @@ export const processDataValues = (data: EvaluationEntry[], realValues: DataEleme
     } else if (item.quantile === highQuantile) {
       return 'quantile_high';
     } else if (item.quantile === 0.5) {
-      return 'median';
+        return 'median';
+    } else if (item.quantile === midLowQuantile) {
+        return 'quantile_mid_low';
+    } else if (item.quantile === midHighQuantile) {
+        return 'quantile_mid_high';
     } else {
-        return 'quantile';
+        return 'unknown';
     }
   }
   //const groupedData = groupBy(data, item => item.orgUnit.concat(item.splitPeriod));

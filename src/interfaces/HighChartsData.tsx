@@ -3,4 +3,5 @@ export interface HighChartsData {
     ranges: number[][];
     averages: number[][];
     realValues?: number[];
+    midranges?: number[][];
 }
