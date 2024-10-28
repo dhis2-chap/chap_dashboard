@@ -1,9 +1,11 @@
 // src/App.js
 // @ts-nocheck
 import React from 'react';
-import PredictionResultsChart from './components/PredictionResultsChart';
+//import PredictionResultsChart from './components/PredictionResultsChart';
 import {OpenAPI} from "./httpfunctions";
-import EvaluationResultsChart from "./components/EvaluationResultsChart";
+//import EvaluationResultsChart from "@components/EvaluationResultsChartFromApi";
+import ApiLoadedEvaluationResultsChart from "./components/ApiLoadedEvaluationResultsChart";
+import EvaluationResultChartFromFileSelector from "./components/EvaluationResultChartFromFileSelector";
 
 function App() {
 
@@ -11,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <h1>FastAPI & Highcharts Example</h1>
-      <EvaluationResultsChart />
+        <EvaluationResultChartFromFileSelector />
     </div>
   );
 }
