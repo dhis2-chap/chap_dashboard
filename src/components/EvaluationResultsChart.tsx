@@ -52,6 +52,7 @@ const processDataValues = (data: EvaluationEntry[]): Record<string, HighChartsDa
 
 const EvaluationResultsChart = () => {
   const [orgUnitsData, setOrgUnitsData] = useState<Record<string, HighChartsData>>({});
+  const [allSplitPeriods, setAllSplitPeriods] = useState<string[]>([]);
   const getData = async () => {
     const response = await DefaultService.getEvaluationResultsGetEvaluationResultsGet()
     const orgUnitsProcessedData = processDataValues(response.predictions);
