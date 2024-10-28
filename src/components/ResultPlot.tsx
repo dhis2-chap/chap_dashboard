@@ -37,25 +37,25 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => 
                 },
                 series: [
                     {
-                        name: 'Real Data',
+                        name: 'Real Cases',
                         data: props.data.realValues,
                         zIndex: 2,
                         type: 'line',
                         color: Highcharts.getOptions().colors[2], // Different color for real data
-                        dashStyle: 'ShortDash', // Optional: to differentiate style
                         marker: {
                             enabled: true,
+                            lineWidth: 2,
                             fillColor: Highcharts.getOptions().colors[2]
                         }
                     },
                     {
-                    name: 'Disease cases',
+                    name: 'Predicted Cases',
                     data: props.data.averages,
                     zIndex: 1,
                     marker: {
                         fillColor: 'white',
-                        lineWidth: 2,
-                        lineColor: Highcharts.getOptions().colors[0]
+                        lineColor: Highcharts.getOptions().colors[0],
+                        dashStyle: 'ShortDash', // Optional: to differentiate style
                     }
                 }, {
                     name: 'Quantiles',
