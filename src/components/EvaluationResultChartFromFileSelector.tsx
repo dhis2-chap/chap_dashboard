@@ -29,7 +29,9 @@ const EvaluationResultChartFromFileSelector: React.FC = () => {
 
   return (
     <div>
-      <label>Upload a JSON file:</label>
+      <h2> Upload a file</h2>
+        <p>Upload a JSON file containing the evaluation results from CHAP to view the results.</p>
+      <label>Choose file:</label>
       <input type="file" accept=".json" onChange={handleFileChange} />
       {splitPeriods.length > 0 && (
         <EvaluationResultsDashboard data={data} splitPeriods={splitPeriods} />

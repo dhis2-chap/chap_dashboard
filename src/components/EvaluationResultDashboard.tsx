@@ -19,6 +19,11 @@ const EvaluationResultsDashboard: React.FC<EvaluationResultsChartProps> = ({ dat
   return (
     <div>
       <div>
+          <h2>View split period</h2>
+          The split period is the first period where the model predicts. The further the predicted period is away from the split period, the less accurate the prediction.
+          CHAP uses many split periods in order to get many predictions to evalaute the model. This gives the model more opportunities to make 'mistakes' which we can pick up on.
+          It's therefore important to look at many split periods when evaluating a model. (Note: loading a new split period might take some time)<br />
+
         <label>Select the split period: </label>
         <select value={selectedSplitPeriod} onChange={handlePeriodChange}>
           {splitPeriods.map((splitPeriod) => (
