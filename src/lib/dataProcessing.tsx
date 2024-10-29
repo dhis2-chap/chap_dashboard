@@ -5,11 +5,9 @@ import {DataElement, EvaluationEntry} from "../httpfunctions";
 
 export function joinRealAndPredictedData(predictedData: HighChartsData, realData: DataElement[]): HighChartsData {
     const nPeriods = 52*3;
-    const predictionStart = predictedData.periods[0];
     const predictionEnd = predictedData.periods[predictedData.periods.length - 1];
     const realPeriodsFiltered = realData.map(item => item.pe).filter(period => period <= predictionEnd).sort().slice(-nPeriods);
     const realDataFiltered: number[] = realPeriodsFiltered.map(period => realData.find(item => item.pe === period)?.value ?? null);
-    const nRealPeriods = realDataFiltered.length;
     const padLength = realDataFiltered.length - predictedData.averages.length;
     const lastReal = realDataFiltered[padLength-1];
     const paddedAverage = Array(padLength-1).fill(null).concat([[lastReal]]).concat(predictedData.averages);
@@ -86,7 +84,6 @@ function groupByTwoKeys<T>(
 
 
 export const processDataValues = (data: EvaluationEntry[], realValues: DataElement[]): Record<string, Record<string, HighChartsData>> => {
-  const realPeriods = realValues.map(item => item.pe).sort();
   const quantiles = Array.from(new Set(data.map(item => item.quantile))).sort();
   const lowQuantile = quantiles[0];
   const midLowQuantile = quantiles[1];
