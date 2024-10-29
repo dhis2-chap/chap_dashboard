@@ -1,11 +1,34 @@
 import React from 'react';
 import { ResultPlot } from "./ResultPlot";
 import { HighChartsData } from "../interfaces/HighChartsData";
+import { Virtuoso } from 'react-virtuoso';
 
 interface EvaluationResultsChartProps {
   data: Record<string, Record<string, HighChartsData>>;
   splitPeriods: string[];
 }
+interface ResultPlotListProps {
+  orgUnitsData: Record<string, HighChartsData>;
+}
+
+const ResultPlotList: React.FC<ResultPlotListProps> = ({ orgUnitsData}) => {
+  return (
+    <Virtuoso
+      style={{ height: '100vh' }}
+      totalCount={Object.keys(orgUnitsData).length}
+      itemContent={(index) => {
+        const orgUnit = Object.keys(orgUnitsData)[index];
+        return (
+          <div key={orgUnit} style={{ marginBottom: '40px' }}>
+            <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]} />
+          </div>
+        );
+      }}
+    />
+  );
+};
+
+
 
 const EvaluationResultsDashboard: React.FC<EvaluationResultsChartProps> = ({ data, splitPeriods }) => {
   const [orgUnitsData, setOrgUnitsData] = React.useState<Record<string, HighChartsData>>(data[splitPeriods[0]]);
@@ -34,11 +57,7 @@ const EvaluationResultsDashboard: React.FC<EvaluationResultsChartProps> = ({ dat
         </select>
       </div>
       <div>
-        {Object.keys(orgUnitsData).map((orgUnit) => (
-          <div key={orgUnit} style={{ marginBottom: '40px' }}>
-            <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]} />
-          </div>
-        ))}
+          <ResultPlotList orgUnitsData={orgUnitsData} />
       </div>
     </div>
   );
