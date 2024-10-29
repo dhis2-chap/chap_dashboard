@@ -12,7 +12,7 @@ function App() {
     OpenAPI.BASE = "http://localhost:8000";
   return (
     <div className="App">
-      <h1>FastAPI & Highcharts Example</h1>
+      <h1>DHIS2-CHAP Model Evaluation Dashboard</h1>
         <EvaluationResultChartFromFileSelector />
     </div>
   );
