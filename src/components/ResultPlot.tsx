@@ -18,6 +18,9 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => 
                     text: 'Model: Model Name',
                     align: 'left'
                 },
+                chart: {
+                    zoomType: 'x'
+                },
                 xAxis: {
                     categories: props.data.periods, // Use periods as categories
                     title: {

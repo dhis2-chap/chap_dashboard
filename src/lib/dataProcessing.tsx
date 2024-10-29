@@ -4,9 +4,10 @@ import {HighChartsData} from "../interfaces/HighChartsData";
 import {DataElement, EvaluationEntry} from "../httpfunctions";
 
 export function joinRealAndPredictedData(predictedData: HighChartsData, realData: DataElement[]): HighChartsData {
+    const nPeriods = 52*3;
     const predictionStart = predictedData.periods[0];
     const predictionEnd = predictedData.periods[predictedData.periods.length - 1];
-    const realPeriodsFiltered = realData.map(item => item.pe).filter(period => period <= predictionEnd).sort().slice(-52);
+    const realPeriodsFiltered = realData.map(item => item.pe).filter(period => period <= predictionEnd).sort().slice(-nPeriods);
     const realDataFiltered: number[] = realPeriodsFiltered.map(period => realData.find(item => item.pe === period)?.value ?? null);
     const nRealPeriods = realDataFiltered.length;
     //const nPredictedPeriods = predictedData.averages.length;
