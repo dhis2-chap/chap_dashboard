@@ -1,8 +1,9 @@
 import React from 'react';
 import { ResultPlot } from "./ResultPlot";
 import { HighChartsData } from "../interfaces/HighChartsData";
-import { Virtuoso } from 'react-virtuoso';
-
+//import { Virtuoso } from 'react-virtuoso';
+//const Virtuoso = React.lazy(() => import('react-virtuoso'));
+const Virtuoso = React.lazy(() => import('react-virtuoso').then((module) => ({ default: module.Virtuoso })));
 interface EvaluationResultsChartProps {
   data: Record<string, Record<string, HighChartsData>>;
   splitPeriods: string[];
@@ -16,7 +17,7 @@ const ResultPlotList: React.FC<ResultPlotListProps> = ({ orgUnitsData}) => {
     <Virtuoso
       style={{ height: '100vh' }}
       totalCount={Object.keys(orgUnitsData).length}
-      itemContent={(index) => {
+      itemContent={(index: number) => {
         const orgUnit = Object.keys(orgUnitsData)[index];
         return (
           <div key={orgUnit} style={{ marginBottom: '40px' }}>

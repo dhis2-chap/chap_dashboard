@@ -1,10 +1,7 @@
 // src/App.js
 // @ts-nocheck
 import React from 'react';
-//import PredictionResultsChart from './components/PredictionResultsChart';
 import {OpenAPI} from "./httpfunctions";
-//import EvaluationResultsChart from "@components/EvaluationResultsChartFromApi";
-import ApiLoadedEvaluationResultsChart from "./components/ApiLoadedEvaluationResultsChart";
 import EvaluationResultChartFromFileSelector from "./components/EvaluationResultChartFromFileSelector";
 
 function App() {

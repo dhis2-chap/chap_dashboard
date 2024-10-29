@@ -10,8 +10,6 @@ export function joinRealAndPredictedData(predictedData: HighChartsData, realData
     const realPeriodsFiltered = realData.map(item => item.pe).filter(period => period <= predictionEnd).sort().slice(-nPeriods);
     const realDataFiltered: number[] = realPeriodsFiltered.map(period => realData.find(item => item.pe === period)?.value ?? null);
     const nRealPeriods = realDataFiltered.length;
-    //const nPredictedPeriods = predictedData.averages.length;
-    //Pad the real data with zeros to match the number of predicted periods
     const padLength = realDataFiltered.length - predictedData.averages.length;
     const lastReal = realDataFiltered[padLength-1];
     const paddedAverage = Array(padLength-1).fill(null).concat([[lastReal]]).concat(predictedData.averages);
