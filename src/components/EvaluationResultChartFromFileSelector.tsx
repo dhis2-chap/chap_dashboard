@@ -5,9 +5,10 @@ import { HighChartsData } from "../interfaces/HighChartsData";
 
 const EvaluationResultChartFromFileSelector: React.FC = () => {
   const [data, setData] = useState<Record<string, Record<string, HighChartsData>>>({});
+  const [data2, setData2] = useState<Record<string, Record<string, HighChartsData>>>({});
   const [splitPeriods, setSplitPeriods] = useState<string[]>([]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const dataSetters = [setData, setData2];
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, file_id: number = 0) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -16,7 +17,7 @@ const EvaluationResultChartFromFileSelector: React.FC = () => {
           const fileData = JSON.parse(e.target?.result as string);
           const processedData = processDataValues(fileData.predictions, fileData.actualCases.data);
           const splitPeriods = Object.keys(processedData);
-          setData(processedData);
+          dataSetters[file_id](processedData);
           setSplitPeriods(splitPeriods);
         } catch (error) {
           console.error("Error reading or processing file", error);
@@ -26,13 +27,18 @@ const EvaluationResultChartFromFileSelector: React.FC = () => {
       reader.readAsText(file);
     }
   };
-
+  const handleFileChange2 = (event: React.ChangeEvent<HTMLInputElement>) => handleFileChange(event, 1);
   return (
     <div>
       <h2> Upload a file</h2>
         <p>Upload a JSON file containing the evaluation results from CHAP to view the results.</p>
-      <label>Choose file:</label>
-      <input type="file" accept=".json" onChange={handleFileChange} />
+      <p><label>Choose file:</label>
+        <input type="file" accept=".json" onChange={handleFileChange} />
+      </p>
+      <p><label>Choose comparison file:</label>
+        <input type="file" accept=".json" onChange={handleFileChange2} />
+      </p>
+
       {splitPeriods.length > 0 && (
         <EvaluationResultsDashboard data={data} splitPeriods={splitPeriods} />
       )}

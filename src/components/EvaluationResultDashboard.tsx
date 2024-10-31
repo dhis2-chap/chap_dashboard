@@ -1,8 +1,6 @@
 import React from 'react';
 import { ResultPlot } from "./ResultPlot";
 import { HighChartsData } from "../interfaces/HighChartsData";
-//import { Virtuoso } from 'react-virtuoso';
-//const Virtuoso = React.lazy(() => import('react-virtuoso'));
 const Virtuoso = React.lazy(() => import('react-virtuoso').then((module) => ({ default: module.Virtuoso })));
 interface EvaluationResultsChartProps {
   data: Record<string, Record<string, HighChartsData>>;
@@ -44,9 +42,11 @@ const EvaluationResultsDashboard: React.FC<EvaluationResultsChartProps> = ({ dat
     <div>
       <div>
           <h2>View split period</h2>
+          <p>
           The split period is the first period where the model predicts. The further the predicted period is away from the split period, the less accurate the prediction.
           CHAP uses many split periods in order to get many predictions to evalaute the model. This gives the model more opportunities to make 'mistakes' which we can pick up on.
-          It's therefore important to look at many split periods when evaluating a model. (Note: loading a new split period might take some time)<br />
+          It's therefore important to look at many split periods when evaluating a model. (Note: loading a new split period might take some time)
+          </p>
 
         <label>Select the split period: </label>
         <select value={selectedSplitPeriod} onChange={handlePeriodChange}>
