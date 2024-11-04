@@ -21,7 +21,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<EvaluationResultChartFromFileSelector />} />
+        <Route path="/" element={Wrapper(<EvaluationResultChartFromFileSelector />)} />
         <Route path="/demo" element={Wrapper(<EvaluationDemo/>)} />
       </Routes>
     </Router>
