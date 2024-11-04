@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import EvaluationResultsDashboard from './EvaluationResultDashboard';
+import EvaluationResultsDashboard, {ComparisonDashboard} from './EvaluationResultDashboard';
 import { processDataValues } from "../lib/dataProcessing";
 import { HighChartsData } from "../interfaces/HighChartsData";
 
 const EvaluationResultChartFromFileSelector: React.FC = () => {
-  const [data, setData] = useState<Record<string, Record<string, HighChartsData>>>({});
-  const [data2, setData2] = useState<Record<string, Record<string, HighChartsData>>>({});
+  const [data, setData] = useState<Record<string, Record<string, HighChartsData>>>();
+  const [data2, setData2] = useState<Record<string, Record<string, HighChartsData>>>();
   const [splitPeriods, setSplitPeriods] = useState<string[]>([]);
   const dataSetters = [setData, setData2];
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, file_id: number = 0) => {
@@ -18,6 +18,7 @@ const EvaluationResultChartFromFileSelector: React.FC = () => {
           const processedData = processDataValues(fileData.predictions, fileData.actualCases.data);
           const splitPeriods = Object.keys(processedData);
           dataSetters[file_id](processedData);
+          console.log(file_id, processedData);
           setSplitPeriods(splitPeriods);
         } catch (error) {
           console.error("Error reading or processing file", error);
@@ -39,9 +40,10 @@ const EvaluationResultChartFromFileSelector: React.FC = () => {
         <input type="file" accept=".json" onChange={handleFileChange2} />
       </p>
 
-      {splitPeriods.length > 0 && (
-        <EvaluationResultsDashboard data={data} splitPeriods={splitPeriods} />
-      )}
+      {(splitPeriods.length > 0) && (data!=undefined) && (data2!=undefined) &&
+          <ComparisonDashboard data={data} data2={data2} splitPeriods={splitPeriods} />
+        //<EvaluationResultsDashboard data={data} splitPeriods={splitPeriods} />
+      }
     </div>
   );
 };
