@@ -7,23 +7,22 @@ import EvaluationResultChartFromFileSelector from "./components/EvaluationResult
 import styles from './App.module.css';
 import EvaluationDemo from "./components/EvaluationDemo";
 
-function MainApp() {
-  return (
-          <div className={styles.container}>
-              <h1>DHIS2-CHAP Model Evaluation Dashboard</h1>
-              <EvaluationResultChartFromFileSelector />
-          </div>
-  );
+function Wrapper(element: React.ReactNode) {
+    return (
+        <div className={styles.container}>
+            <h1>DHIS2-CHAP Model Evaluation Dashboard</h1>
+        {element}
+        </div>
+    );
 }
-
 
 function App() {
    OpenAPI.BASE = "http://localhost:8000";
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainApp />} />
-        <Route path="/demo" element={<EvaluationDemo/>} />
+        <Route path="/" element={<EvaluationResultChartFromFileSelector />} />
+        <Route path="/demo" element={Wrapper(<EvaluationDemo/>)} />
       </Routes>
     </Router>
   );
