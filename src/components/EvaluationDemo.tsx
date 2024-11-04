@@ -12,7 +12,7 @@ const EvaluationDemo: React.FC = () => {
   const [splitPeriods, setSplitPeriods] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/nicaragua_weekly_data_evaluation_response_naive_model.json`) // Using PUBLIC_URL to ensure compatibility with different environments
+    fetch(`${process.env.PUBLIC_URL}/nicaragua_weekly_data_evaluation_response_chap_ewars_weekly.json`) // Using PUBLIC_URL to ensure compatibility with different environments
       .then(response => response.json())
       .then(data => {
             const processedData = processDataValues(data.predictions, data.actualCases.data);

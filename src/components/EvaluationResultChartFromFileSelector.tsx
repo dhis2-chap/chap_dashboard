@@ -22,7 +22,6 @@ const EvaluationResultChartFromFileSelector: React.FC = () => {
           setSplitPeriods(splitPeriods);
         } catch (error) {
           console.error("Error reading or processing file", error);
-          // Handle error (e.g., show a message to the user)
         }
       };
       reader.readAsText(file);
