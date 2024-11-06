@@ -62,11 +62,11 @@ const ComparisonPlotList: React.FC<ComparisonPlotListProps> = ({ orgUnitsData, o
     }
 
     return (
-    <Virtuoso
-      style={{ height: '100vh' }}
-      totalCount={Object.keys(orgUnitsData).length}
-      itemContent={getItemContent()}
-    />
+      <Virtuoso
+        useWindowScroll
+        totalCount={Object.keys(orgUnitsData).length}
+        itemContent={getItemContent()}
+      />
   );
 };
 

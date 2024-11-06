@@ -1,6 +1,8 @@
 import React from "react";
 import { ResultPlot } from "./ResultPlot";
 import { HighChartsData } from "../interfaces/HighChartsData";
+import styles from "../styles/ComparisonPlot.module.css";
+
 
 interface SideBySidePlotsProps {
     data1: HighChartsData;
@@ -10,9 +12,13 @@ interface SideBySidePlotsProps {
 
 export const ComparisonPlot: React.FC<SideBySidePlotsProps> = ({ data1, data2, orgUnit1}) => {
     return (
-        <div style={{ display: "flex", gap: "20px" }}>
+        <div className={styles.comparionPair}>
+         <div className={styles.title}>{orgUnit1}</div>
+
+        <div className={styles.sideBySide}>
             <ResultPlot orgUnit={orgUnit1} data={data1} />
             <ResultPlot orgUnit={orgUnit1} data={data2} />
+        </div>
         </div>
     );
 };

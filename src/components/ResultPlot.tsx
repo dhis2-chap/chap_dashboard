@@ -3,6 +3,7 @@ import Highcharts from "highcharts";
 import React from "react";
 import {HighChartsData} from "../interfaces/HighChartsData";
 import HighchartsMore from "highcharts/highcharts-more";
+import { color } from "highcharts";
 HighchartsMore(Highcharts); // Enables the 'arearange' series type
 
 export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => {
@@ -11,8 +12,7 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => 
             highcharts={Highcharts}
             options={{
                 title: {
-                    text: `Predicted Disease Cases for ${props.orgUnit}`,
-                    align: 'left'
+                    text: ""
                 },
                 subtitle: {
                     text: 'Model: Model Name',
@@ -42,49 +42,52 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => 
                     {
                         name: 'Real Cases',
                         data: props.data.realValues,
-                        zIndex: 2,
-                        type: 'line',
-                        color: Highcharts.getOptions().colors[2], // Different color for real data
+                        zIndex: 4,
+                        lineWidth: 2.5,
+                        type: 'spline',
+                        color: "#f68000", // Different color for real data
                         marker: {
-                            enabled: true,
+                            enabled: false,
                             lineWidth: 2,
                             fillColor: Highcharts.getOptions().colors[2]
                         }
                     },
                     {
-                    name: 'Predicted Cases',
-                    data: props.data.averages,
-                    zIndex: 1,
-                    marker: {
-                        fillColor: 'white',
-                        lineColor: Highcharts.getOptions().colors[0],
-                        dashStyle: 'ShortDash', // Optional: to differentiate style
-                    }
-                }, {
-                    name: 'Quantiles',
-                    data: props.data.ranges,
-                    type: 'arearange',
-                    lineWidth: 0,
-                    linkedTo: ':previous',
-                    color: Highcharts.getOptions().colors[0],
-                    fillOpacity: 0.3,
-                    zIndex: 0,
-                    marker: {
-                        enabled: false
-                    },
-                }, {
-                    name: 'QuantilesMid',
-                    data: props.data.midranges,
-                    type: 'arearange',
-                    lineWidth: 0,
-                    linkedTo: ':previous',
-                    color: Highcharts.getOptions().colors[0],
-                    fillOpacity: 0.3,
-                    zIndex: 0,
-                    marker: {
-                        enabled: false
-                    },
-                }]
+                        name: 'Predicted Cases',
+                        type: "line",
+                        color: "#004bbd",
+                        data: props.data.averages,
+                        zIndex: 3,
+                        opacity: 1,
+                        lineWidth: 2.5,
+                        marker: {
+                            enabled: false
+                        }
+                    }, {
+                        name: 'Quantiles',
+                        data: props.data.ranges,
+                        type: 'arearange',
+                        lineWidth: 0,
+                        linkedTo: ':previous',
+                        color: "#c4dcf2",
+                        fillOpacity: 1,
+                        zIndex: 0,
+                        marker: {
+                            enabled: false
+                        },
+                    }, {
+                        name: 'QuantilesMid',
+                        data: props.data.midranges,
+                        type: 'arearange',
+                        lineWidth: 1,
+                        linkedTo: ':previous',
+                        color: "#9bbdff",
+                        fillOpacity: 1,
+                        zIndex: 1,
+                        marker: {
+                            enabled: false
+                        },
+                    }]
             }}
         />
     );
