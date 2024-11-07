@@ -19,7 +19,7 @@ const ResultPlotList: React.FC<ResultPlotListProps> = ({ orgUnitsData}) => {
             const orgUnit = Object.keys(orgUnitsData)[index];
             return (
                 <div key={orgUnit} style={{marginBottom: '40px'}}>
-                    <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]}/>
+                    <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]} modelName={'ModelName'}/>
                 </div>
             );
         };
@@ -37,9 +37,13 @@ const ResultPlotList: React.FC<ResultPlotListProps> = ({ orgUnitsData}) => {
 interface ComparisonPlotListProps {
   orgUnitsData: Record<string, HighChartsData>;
   orgUnitsData2: Record<string, HighChartsData>;
+  modelName: string;
+    modelName2: string;
+
 }
 
-const ComparisonPlotList: React.FC<ComparisonPlotListProps> = ({ orgUnitsData, orgUnitsData2}) => {
+const ComparisonPlotList: React.FC<ComparisonPlotListProps> = ({ orgUnitsData, orgUnitsData2, modelName, modelName2}) => {
+    const modelNames = [modelName, modelName2];
     function getItemContent() {
         return (index: number) => {
             const orgUnit = Object.keys(orgUnitsData)[index];
@@ -48,14 +52,14 @@ const ComparisonPlotList: React.FC<ComparisonPlotListProps> = ({ orgUnitsData, o
                 console.log('no data2');
                 return (
                     <div key={orgUnit} style={{marginBottom: '40px'}}>
-                        <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]}/>
+                        <ResultPlot orgUnit={orgUnit} data={orgUnitsData[orgUnit]} modelName={modelNames[index]}/>
                     </div>
                 );
             }
             console.log('Data2 exists');
             return (
                 <div key={orgUnit} style={{marginBottom: '40px'}}>
-                    <ComparisonPlot data1={orgUnitsData[orgUnit]} data2={orgUnitsData2[orgUnit]} orgUnit1={orgUnit}/>
+                    <ComparisonPlot data1={orgUnitsData[orgUnit]} data2={orgUnitsData2[orgUnit]} orgUnit1={orgUnit} modelNames={modelNames}/>
                 </div>
             );
         };
@@ -97,10 +101,14 @@ interface ComparisonResultsChartProps {
   data: Record<string, Record<string, HighChartsData>>;
   data2: Record<string, Record<string, HighChartsData>>;
   splitPeriods: string[];
+  name: string;
+  name2: string;
+
 }
 
-export const ComparisonDashboard: React.FC<ComparisonResultsChartProps> = ({ data, data2, splitPeriods }) => {
+export const ComparisonDashboard: React.FC<ComparisonResultsChartProps> = ({ data, data2, splitPeriods, name , name2 }) => {
     console.log('####', data2);
+    console.log(name)
     let first_period = splitPeriods[0];
     console.log('####', data2, first_period);
     console.log('####1.5', data2[first_period]);
@@ -129,7 +137,7 @@ export const ComparisonDashboard: React.FC<ComparisonResultsChartProps> = ({ dat
         onChange={handlePeriodChange}
       />
       <div>
-          <ComparisonPlotList orgUnitsData={orgUnitsData} orgUnitsData2={orgUnitsData2}/>
+          <ComparisonPlotList orgUnitsData={orgUnitsData} orgUnitsData2={orgUnitsData2} modelName={name} modelName2={name2}/>
       </div>
     </div>
   );

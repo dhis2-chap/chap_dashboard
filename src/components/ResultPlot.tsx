@@ -6,7 +6,7 @@ import HighchartsMore from "highcharts/highcharts-more";
 import { color } from "highcharts";
 HighchartsMore(Highcharts); // Enables the 'arearange' series type
 
-export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => {
+export const ResultPlot = (props: { orgUnit: string, data: HighChartsData, modelName: string}) => {
     return (
         <HighchartsReact
             highcharts={Highcharts}
@@ -15,7 +15,7 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData }) => 
                     text: ""
                 },
                 subtitle: {
-                    text: 'Model: Model Name',
+                    text: 'Model: ' + props.modelName || 'Unknown',
                     align: 'left'
                 },
                 chart: {
