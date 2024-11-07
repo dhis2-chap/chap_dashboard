@@ -1,10 +1,19 @@
+// @ts-ignore
+
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import React from "react";
 import {HighChartsData} from "../interfaces/HighChartsData";
 import HighchartsMore from "highcharts/highcharts-more";
-import { color } from "highcharts";
+
 HighchartsMore(Highcharts); // Enables the 'arearange' series type
+function syncChartZoom(event: any): void {
+    Highcharts.charts.forEach((chart: any) => {
+        if (chart) {
+            chart.xAxis[0].setExtremes(event.min, event.max);
+        }
+    }); // @ts-ignore
+}
 
 export const ResultPlot = (props: { orgUnit: string, data: HighChartsData, modelName: string}) => {
     return (
@@ -23,6 +32,9 @@ export const ResultPlot = (props: { orgUnit: string, data: HighChartsData, model
                 },
                 xAxis: {
                     categories: props.data.periods, // Use periods as categories
+                    events: {
+                        afterSetExtremes: syncChartZoom
+                    },
                     title: {
                         text: 'Period'
                     },
