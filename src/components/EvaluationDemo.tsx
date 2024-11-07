@@ -30,6 +30,6 @@ const EvaluationDemo: React.FC = () => {
   }, []);
 
   if (!data2 || !data || !splitPeriods.length) return <div>Loading...</div>;
-  return (<ComparisonDashboard data={data} data2={data2} splitPeriods={splitPeriods} />)
+  return (<ComparisonDashboard data={data} data2={data2} splitPeriods={splitPeriods} name={'CHAP_EWARS'} name2={'CHAP_AR'} />)
 }
 export default EvaluationDemo

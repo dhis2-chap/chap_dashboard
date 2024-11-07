@@ -12,7 +12,7 @@ const EvaluationResultChartFromFileSelector: React.FC = () => {
   const modelNameSetters = [setModelName, setModelName2];
   const dataSetters = [setData, setData2];
   const extractModelName = (filename: string) => {
-    const match = filename.match(/response_(.*?)\.json/);
+    const match = filename.match(/response_(k.*?)\.json/);
     if (match) {
       return match[1];
     } else {
