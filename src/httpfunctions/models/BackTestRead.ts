@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type DataElement = {
-    pe: string;
-    ou: string;
-    value: (number | null);
+export type BackTestRead = {
+    dataset_id: number;
+    estimator_id: string;
+    id: number;
 };
 

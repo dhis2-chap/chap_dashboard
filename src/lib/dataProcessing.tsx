@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import {HighChartsData} from "../interfaces/HighChartsData";
-import {DataElement, EvaluationEntry} from "../httpfunctions";
+import {DataElement, EvaluationEntry, } from "../httpfunctions";
 
 export function joinRealAndPredictedData(predictedData: HighChartsData, realData: DataElement[]): HighChartsData {
     const nPeriods = 52*3;
@@ -15,6 +15,12 @@ export function joinRealAndPredictedData(predictedData: HighChartsData, realData
     const paddedMidRanges = Array(padLength-1).fill(null).concat([[lastReal, lastReal]]).concat(predictedData.midranges);
     const allPeriods = realPeriodsFiltered.concat(predictedData.periods);
     return {periods: allPeriods, ranges: paddedRanges, averages: paddedAverage, realValues: realDataFiltered,midranges: paddedMidRanges};
+}
+
+export function translateToDHIS2(data: any):  DataElement {
+    return {'ou': data.region_id, 'pe': data.period_id,
+        'value': data.value}
+
 }
 
 export function createHighChartsData<T extends { period: string, value: number }>(groupedDatum: T[], quantileFunc: (item: T) => string): HighChartsData {

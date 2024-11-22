@@ -46,7 +46,7 @@ export class DefaultService {
     }
     /**
      * Evaluate
-     * Start a prediction task using the given data as training data.
+     * Start an evaluation task using the given data as training data.
      * Results can be retrieved using the get-results endpoint.
      * @param requestBody
      * @param nSplits

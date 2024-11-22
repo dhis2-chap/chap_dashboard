@@ -5,6 +5,279 @@
         "version": "0.1.0"
     },
     "paths": {
+        "/crud/backtest/{backtest_id}": {
+            "get": {
+                "tags": [
+                    "crud"
+                ],
+                "summary": "Get Backtest",
+                "operationId": "get_backtest_crud_backtest__backtest_id__get",
+                "parameters": [
+                    {
+                        "name": "backtest_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Backtest Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BackTestFull"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crud/backtest": {
+            "get": {
+                "tags": [
+                    "crud"
+                ],
+                "summary": "Get Backtests",
+                "operationId": "get_backtests_crud_backtest_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/BackTestRead"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Backtests Crud Backtest Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "crud"
+                ],
+                "summary": "Create Backtest",
+                "operationId": "create_backtest_crud_backtest_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BackTestCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BackTestCreate"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crud/dataset/{dataset_id}": {
+            "get": {
+                "tags": [
+                    "crud"
+                ],
+                "summary": "Get Dataset",
+                "operationId": "get_dataset_crud_dataset__dataset_id__get",
+                "parameters": [
+                    {
+                        "name": "dataset_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Dataset Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DataSet"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/crud/datasets": {
+            "get": {
+                "tags": [
+                    "crud"
+                ],
+                "summary": "Get Datasets",
+                "operationId": "get_datasets_crud_datasets_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/DataSetRead"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Datasets Crud Datasets Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/evaluation_entry": {
+            "get": {
+                "tags": [
+                    "analytics"
+                ],
+                "summary": "Get Evaluation Entries",
+                "operationId": "get_evaluation_entries_analytics_evaluation_entry_get",
+                "parameters": [
+                    {
+                        "name": "backtest_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Backtest Id"
+                        }
+                    },
+                    {
+                        "name": "quantiles",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            },
+                            "title": "Quantiles"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EvaluationEntry"
+                                    },
+                                    "title": "Response Get Evaluation Entries Analytics Evaluation Entry Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/actual_cases/{backtest_id}": {
+            "get": {
+                "tags": [
+                    "analytics"
+                ],
+                "summary": "Get Actual Cases",
+                "operationId": "get_actual_cases_analytics_actual_cases__backtest_id__get",
+                "parameters": [
+                    {
+                        "name": "backtest_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Backtest Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DataList"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "favicon.ico": {
             "get": {
                 "summary": "Favicon",
@@ -64,7 +337,7 @@
         "/evaluate": {
             "post": {
                 "summary": "Evaluate",
-                "description": "Start a prediction task using the given data as training data.\nResults can be retrieved using the get-results endpoint.",
+                "description": "Start an evaluation task using the given data as training data.\nResults can be retrieved using the get-results endpoint.",
                 "operationId": "evaluate_evaluate_post",
                 "parameters": [
                     {
@@ -276,6 +549,186 @@
     },
     "components": {
         "schemas": {
+            "BackTestCreate": {
+                "properties": {
+                    "dataset_id": {
+                        "type": "integer",
+                        "title": "Dataset Id"
+                    },
+                    "estimator_id": {
+                        "type": "string",
+                        "title": "Estimator Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "dataset_id",
+                    "estimator_id"
+                ],
+                "title": "BackTestCreate"
+            },
+            "BackTestForecast": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "backtest_id": {
+                        "type": "integer",
+                        "title": "Backtest Id"
+                    },
+                    "period_id": {
+                        "type": "string",
+                        "title": "Period Id"
+                    },
+                    "region_id": {
+                        "type": "string",
+                        "title": "Region Id"
+                    },
+                    "last_train_period_id": {
+                        "type": "string",
+                        "title": "Last Train Period Id"
+                    },
+                    "last_seen_period_id": {
+                        "type": "string",
+                        "title": "Last Seen Period Id"
+                    },
+                    "values": {
+                        "items": {
+                            "type": "number"
+                        },
+                        "type": "array",
+                        "title": "Values"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "backtest_id",
+                    "period_id",
+                    "region_id",
+                    "last_train_period_id",
+                    "last_seen_period_id"
+                ],
+                "title": "BackTestForecast"
+            },
+            "BackTestFull": {
+                "properties": {
+                    "dataset_id": {
+                        "type": "integer",
+                        "title": "Dataset Id"
+                    },
+                    "estimator_id": {
+                        "type": "string",
+                        "title": "Estimator Id"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "metrics": {
+                        "items": {
+                            "$ref": "#/components/schemas/BackTestMetric"
+                        },
+                        "type": "array",
+                        "title": "Metrics"
+                    },
+                    "forecasts": {
+                        "items": {
+                            "$ref": "#/components/schemas/BackTestForecast"
+                        },
+                        "type": "array",
+                        "title": "Forecasts"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "dataset_id",
+                    "estimator_id",
+                    "id",
+                    "metrics",
+                    "forecasts"
+                ],
+                "title": "BackTestFull"
+            },
+            "BackTestMetric": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "backtest_id": {
+                        "type": "integer",
+                        "title": "Backtest Id"
+                    },
+                    "metric_id": {
+                        "type": "string",
+                        "title": "Metric Id"
+                    },
+                    "period_id": {
+                        "type": "string",
+                        "title": "Period Id"
+                    },
+                    "last_train_period_id": {
+                        "type": "string",
+                        "title": "Last Train Period Id"
+                    },
+                    "last_seen_period_id": {
+                        "type": "string",
+                        "title": "Last Seen Period Id"
+                    },
+                    "value": {
+                        "type": "number",
+                        "title": "Value"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "backtest_id",
+                    "metric_id",
+                    "period_id",
+                    "last_train_period_id",
+                    "last_seen_period_id",
+                    "value"
+                ],
+                "title": "BackTestMetric"
+            },
+            "BackTestRead": {
+                "properties": {
+                    "dataset_id": {
+                        "type": "integer",
+                        "title": "Dataset Id"
+                    },
+                    "estimator_id": {
+                        "type": "string",
+                        "title": "Estimator Id"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "dataset_id",
+                    "estimator_id",
+                    "id"
+                ],
+                "title": "BackTestRead"
+            },
             "Coordinates": {
                 "prefixItems": [
                     {
@@ -320,7 +773,14 @@
                         "title": "Ou"
                     },
                     "value": {
-                        "type": "number",
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "title": "Value"
                     }
                 },
@@ -357,6 +817,59 @@
                     "data"
                 ],
                 "title": "DataList"
+            },
+            "DataSet": {
+                "properties": {
+                    "id": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "polygons": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Polygons"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "title": "DataSet"
+            },
+            "DataSetRead": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "title": "DataSetRead"
             },
             "EvaluationEntry": {
                 "properties": {

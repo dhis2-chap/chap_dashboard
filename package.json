@@ -8,7 +8,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "generate": "yarn openapi --input ./public/openapi.json --output ./src/httpfunctions"
+    "generate": "npx openapi --input ./public/openapi.json --output ./src/httpfunctions"
   },
   "eslintConfig": {
     "extends": [
@@ -32,13 +32,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tanstack/react-query": "^5.61.0",
     "@types/highcharts": "^5.0.44",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "chap_components": "github:dhis2-chap/chap_components",
-    "chap_dashboard": "github:knutdrand/chap_dashboard#master",
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
+    "openapi": "^1.0.1",
+    "openapi-typescript-codegen": "^0.29.0",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.27.0",
     "react-scripts": "^5.0.1",
     "react-virtuoso": "^4.12.0",
